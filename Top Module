@@ -1,0 +1,54 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/24/2019 11:51:57 PM
+// Design Name: 
+// Module Name: Top
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module Top(
+input clk,
+input Hex,
+input Oct,
+input reset,
+input enter,
+input [3:0] switches,
+output [6:0] seg,
+output [3:0] AN
+
+
+    );
+    
+    logic [3:0]T1, T4, T5, line;
+    logic  T2, T6, T7;
+    logic T3;
+    logic T9;
+
+
+    
+
+   RanNum RanNum1(.random_num(T1), .clk(T2));
+   TFlipFlop TFlipFlop0( .rstn(reset), .t(T1[0]), .q(line[0]), .clk(clk));
+   TFlipFlop TFlipFlop1(.rstn(reset), .t(T1[1]), .q(line[1]), .clk(clk));
+   TFlipFlop TFlipFlop2(.rstn(reset), .t(T1[2]), .q(line[2]), .clk(clk));
+   TFlipFlop TFlipFlop3(.rstn(reset), .t(T1[3]), .q(line[3]), .clk(clk));
+   converter converter1(.A(T4),.B(T5),.Hex(Hex),.Oct(Oct), .sega(seg), .AN(AN), .clk(T2), .fsmout(T3), .Enter(enter));
+   clk_div2 clk_divide(.clk(clk),.sclk(T2));
+   splitter splitter1(.Binary(line), .clk(T2),.Hex(Hex),.Oct(Oct), .A(T4), .B(T5));
+   FSM FSM1(.Num(line), .clk(T2), .rst(reset), .Inputs(switches), .Out(T3));
+  
+endmodule
